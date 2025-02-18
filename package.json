@@ -1,0 +1,12 @@
+{
+	"name": "2.1-http",
+	"scripts": {
+		"server": "nodemon -L --watch 'src/**/*.ts' --exec 'tsx' src/server.ts"
+	},
+	"dependencies": {
+		"@types/node": "^20.11.10",
+		"nodemon": "^3.0.3",
+		"prettier": "^3.2.4",
+		"typescript": "^5.3.3"
+	}
+}
