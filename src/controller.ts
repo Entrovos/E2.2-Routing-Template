@@ -35,7 +35,7 @@ export const getAllPokemon = (req: IncomingMessage, res: ServerResponse) => {
 // GET /pokemon/:id
 export const getOnePokemon = (req: IncomingMessage, res: ServerResponse) => {
 	// Find Pokemon by ID
-	const urlParts = req.url?.split("/");
+	const urlParts = req.url.split("/");
 	const pokemonId = parseInt(urlParts[2]);
 
 	const foundPokemon = database.find((pokemon) => pokemon.id === pokemonId);
