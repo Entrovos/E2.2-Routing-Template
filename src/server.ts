@@ -57,8 +57,7 @@ const routes: Routes = {
 const handleRequest = (req: IncomingMessage, res: ServerResponse) => {
 	console.log(`${req.method} ${req.url}`);
 
-	// TODO: Determine the route handler based on the request method and URL.
-	const handler = routes["GET"]["/"];
+	const handler = routes[`${req.method}`][`${req.url}`];
 
 	if (handler) {
 		handler(req, res);
@@ -74,8 +73,11 @@ const handleRequest = (req: IncomingMessage, res: ServerResponse) => {
  * e.g., the `getAllPokemon` function you made, into these slots to establish paths.
  */
 routes.GET["/"] = getHome;
+routes.GET["/pokemon"] = getAllPokemon;
 routes.GET["/pokemon/:id"] = getOnePokemon;
 routes.POST["/pokemon"] = createPokemon;
+routes.PUT["/pokemon/:id"] = updatePokemon;
+routes.DELETE["/pokemon/:id"] = deletePokemon;
 
 // TODO: Add the remaining routes to the routes object.
 
