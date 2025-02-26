@@ -57,12 +57,12 @@ const routes: Routes = {
 const handleRequest = (req: IncomingMessage, res: ServerResponse) => {
 	console.log(`${req.method} ${req.url}`);
 
-	const parts: string[] | undefined = req.url?.split("/");
+	const parts: string[] = req.url?.split("/");
 
-	if (parseInt(parts[2])) {
-		let handler = routes[`${req.method}`][`${req.url}`];
-	} else {
-		let handler = routes[`${req.method}`][`${req.url}`];
+	let handler = routes[`${req.method}`]["/pokemon"];
+
+	if (parts.length > 2) {
+		handler = routes[`${req.method}`]["/pokemon/:id"];
 	}
 
 	if (handler) {

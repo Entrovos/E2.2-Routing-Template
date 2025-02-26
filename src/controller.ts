@@ -1,3 +1,4 @@
+import { Url } from "url";
 import { IncomingMessage, ServerResponse } from "http";
 import { Pokemon } from "./model";
 import { database } from "./model";
@@ -24,12 +25,47 @@ export const getHome = (req: IncomingMessage, res: ServerResponse) => {
 // GET /pokemon
 export const getAllPokemon = (req: IncomingMessage, res: ServerResponse) => {
 	// Existing: Get all Pokemon ...
-	res.statusCode = 200;
-	res.setHeader("Content-Type", "application/json");
+	const url = new URL(req.url!, `http://${req.headers.host}`);
+	const queryParams = url.searchParams;
 
-	res.end(
-		JSON.stringify({ message: "All Pokemon:", payload: database }, null, 2),
-	);
+	if (queryParams.size > 0) {
+		const typeFilter = queryParams.get("type");
+		const sortBy = queryParams.get("sortBy");
+
+		let result: Pokemon[] = [];
+
+		if (typeFilter) {
+			result = database.filter((pokemon) => pokemon.type === typeFilter);
+		}
+
+		if (sortBy) {
+			result = database.sort((pokemon1, pokemon2) =>
+				pokemon1.name < pokemon2.name ? -1 : 1,
+			);
+		}
+
+		res.statusCode = 200;
+		res.setHeader("Content-Type", "application/json");
+
+		res.end(
+			JSON.stringify(
+				{ message: "All Pokemon:", payload: result },
+				null,
+				2,
+			),
+		);
+	} else {
+		res.statusCode = 200;
+		res.setHeader("Content-Type", "application/json");
+
+		res.end(
+			JSON.stringify(
+				{ message: "All Pokemon:", payload: database },
+				null,
+				2,
+			),
+		);
+	}
 };
 
 // GET /pokemon/:id
